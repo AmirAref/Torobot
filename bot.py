@@ -1,4 +1,4 @@
-from telegram import InlineQueryResultArticle, InputTextMessageContent, Update
+from telegram import InlineQueryResultArticle, InputTextMessageContent, InputMediaAnimation, Update
 from telegram import error
 from telegram.constants import ParseMode
 from telegram.ext import Application, CommandHandler, ContextTypes, InlineQueryHandler
@@ -11,17 +11,39 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
 logger = logging.getLogger(__name__)
+gif_file_id = None
+usage_guide_message = """
+سلام 👋
+برای استفاده از ربات کافیه داخل چت مورد نظرتون آیدی ربات رو بنویسید و بعد از یک فاصله اسم کالایی که میخواید رو تایپ کنید : 
 
-
+`@Torobibot فلش مموری`
+"""
 
 # Define a few command handlers. These usually take the two arguments update and
 
 # context.
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /start is issued."""
-
-    await update.message.reply_text("Hello my friend !")
-
+    global gif_file_id
+    
+    # upload usage guide file
+    if gif_file_id :
+        # use the file id
+         usage_guide = gif_file_id
+    else :
+        # upload from file
+        usage_guide = InputMediaAnimation(open('usage_torobot.mp4', 'rb')).media
+    
+    # send usage guide file
+    sent_file = (await update.message.reply_animation(
+        usage_guide,
+        caption=usage_guide_message,
+        parse_mode=ParseMode.MARKDOWN,
+        read_timeout=50,
+        ))
+    
+    # save file id
+    gif_file_id = sent_file.animation.file_id
 
 # inline query handler
 async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
