@@ -5,6 +5,7 @@ from telegram.ext import Application, CommandHandler, ContextTypes, InlineQueryH
 import logging
 from uuid import uuid4
 from Torob import Torob
+from config import TOKEN, PROXY
 
 # Enable logging
 logging.basicConfig(
@@ -80,11 +81,8 @@ def main() -> None:
     """Run the bot."""
 
     # Create the Application and pass it your bot's token.
-    use_proxy = False # True if you want to use or False you do not want
-    TOKEN = 'token'
-    PROXY = 'socks5://127.0.0.1:9050'
     
-    if use_proxy:
+    if PROXY:
         application = Application.builder().token(TOKEN).proxy_url(PROXY).get_updates_proxy_url(PROXY).build()
     else:
         application = Application.builder().token(TOKEN).build()
