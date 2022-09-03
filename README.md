@@ -8,15 +8,21 @@ install the requirements :
 ```bash
 pip install -r requirements.txt
 ```
+### Configuration :
+set the configuration in `config.py`.  
+  
+- `TOKEN` :  
+get your bot token from [BotFather](https://t.me/BotFather) (or if you don't have, make one there).
+then put it in the `TOKEN`
 
-### Bot Token
-get your robot token from [BotFather](https://t.me/BotFather) (or if you don't have, make one there) then put it in the `bot.py` in main function `TOKEN = 'token'`.
-
-
+- `PROXY` :  
+if you want to use proxy to connect to the telegram, put your proxy url like the following :
+  - `PROXY = 'socks5://127.0.0.1:9050'` : socks5 proxy
+  - `PROXY = None` : non-proxy
+  
+  
+## Run :  
 finally run the program :
 ```bash
 python bot.py
 ```
-
-### proxy
-if you want to use proxy to connect to the telegram, you have to make `use_proxy = True` and put your proxy url in `PROXY = '...'` in `bot.py` in main function
