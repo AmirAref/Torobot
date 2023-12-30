@@ -1,0 +1,9 @@
+version: '3.11'
+
+services:
+  bot:
+    container_name: torobot
+    build: .
+    restart: always
+    env_file:
+      - .env
