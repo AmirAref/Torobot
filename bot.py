@@ -82,7 +82,12 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             url=card.product_page,
             description=f"{card.price:,} تومان",
             input_message_content=InputTextMessageContent(
-                "🛍 **{}**\n💰 {:,} تومان\n🛒 [موجود {}]({})".format(card.name1, card.price, card.shop_text, card.product_page), parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True),
+                "🛍 **{}**\n💰 {:,} تومان\n🛒 [موجود {}]({})".format(
+                    card.name1, card.price, card.shop_text, card.product_page
+                ),
+                parse_mode=ParseMode.MARKDOWN,
+                disable_web_page_preview=True,
+            ),
         )
         for card in cards
     ]
@@ -106,8 +111,8 @@ def main() -> None:
         application = (
             Application.builder()
             .token(TOKEN)
-            .proxy_url(PROXY)
-            .get_updates_proxy_url(PROXY)
+            .proxy(PROXY)
+            .get_updates_proxy(PROXY)
             .build()
         )
     else:
