@@ -1,0 +1,18 @@
+[project]
+name = "torobot"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "Amir Aref", email = "amiraref808@gmail.com" }
+]
+dependencies = [
+    "requests>=2.32.3",
+    "python-telegram-bot[socks]>=21.4",
+]
+readme = "README.md"
+requires-python = ">= 3.10"
+
+[tool.rye]
+managed = true
+virtual = true
+dev-dependencies = []
