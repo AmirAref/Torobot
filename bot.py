@@ -77,8 +77,8 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         InlineQueryResultArticle(
             id=str(uuid4()),
             title=card.name1,
-            thumb_url=card.image,
-            thumb_width=80,
+            thumbnail_url=card.image,
+            thumbnail_width=80,
             url=card.product_page,
             description=f"{card.price:,} تومان",
             input_message_content=InputTextMessageContent(
