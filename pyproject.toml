@@ -8,6 +8,7 @@ authors = [
 dependencies = [
     "requests>=2.32.3",
     "python-telegram-bot[socks]>=21.4",
+    "pydantic>=2.8.2",
 ]
 readme = "README.md"
 requires-python = ">= 3.10"

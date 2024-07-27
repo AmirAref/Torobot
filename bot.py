@@ -9,7 +9,7 @@ from telegram.constants import ParseMode
 from telegram.ext import Application, CommandHandler, ContextTypes, InlineQueryHandler
 import logging
 from uuid import uuid4
-from Torob import Torob
+from Torob.api import get_torob_cards
 from os import getenv
 
 # Enable logging
@@ -69,8 +69,8 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     if not query:
         return
     # get results from torob.ir by the query
-    torob = Torob(query)
-    cards = torob.get_result(20)
+    cards = get_torob_cards(query=query, count=20)
+    logger.info(f"i've got these cards : {cards}")
 
     # create the InlineRsult list
     results = [
@@ -95,8 +95,8 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     # send results as answer
     try:
         await update.inline_query.answer(results)
-    except error.BadRequest as e:
-        print(e)
+    except error.BadRequest:
+        logger.exception("send inline query results raised an error :")
 
 
 # footer
