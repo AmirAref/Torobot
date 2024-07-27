@@ -69,7 +69,25 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     if not query:
         return
     # get results from torob.ir by the query
-    cards = get_torob_cards(query=query, count=20)
+    try:
+        cards = get_torob_cards(query=query, count=20)
+    except Exception:
+        logger.exception("get cards data from torob failed : ")
+        # TODO: import messages from another module
+        return await update.inline_query.answer(
+            [
+                InlineQueryResultArticle(
+                    id=str(uuid4()),
+                    title="عملیات با خطا مواجه شد",
+                    # description="",
+                    input_message_content=InputTextMessageContent(
+                        "عملیات با خطا مواجه شد !",
+                        parse_mode=ParseMode.MARKDOWN,
+                        disable_web_page_preview=True,
+                    ),
+                )
+            ]
+        )
     logger.info(f"i've got these cards : {cards}")
 
     # create the InlineRsult list
