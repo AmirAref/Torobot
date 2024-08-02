@@ -1,5 +1,5 @@
 import requests
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 class Card(BaseModel):
@@ -8,14 +8,27 @@ class Card(BaseModel):
     name1: str
     name2: str
     price: int
+    price_text: str
+    stock_status: str | None
     image: str = Field(validation_alias="image_url")
     product_page_slug: str = Field(validation_alias="web_client_absolute_url")
     info_url: str = Field(validation_alias="more_info_url")
     shop_text: str
 
+    @field_validator("stock_status")
+    @classmethod
+    def empty_stock_status(cls, value: str):
+        if value == "":
+            return None
+        return value
+
     @property
     def product_page(self) -> str:
         return f"https://torob.com{self.product_page_slug}"
+
+    @property
+    def is_available(self) -> bool:
+        return self.price != 0
 
 
 def get_torob_cards(query: str, count: int = 24) -> list[Card]:
@@ -35,4 +48,3 @@ def get_torob_cards(query: str, count: int = 24) -> list[Card]:
     cards = [Card.model_validate(item) for item in data["results"]]
     # out
     return cards
-

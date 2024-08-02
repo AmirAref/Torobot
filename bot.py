@@ -10,6 +10,8 @@ from telegram.ext import Application, CommandHandler, ContextTypes, InlineQueryH
 import logging
 from uuid import uuid4
 from Torob.api import get_torob_cards
+from utils import create_info_message
+import messages
 from os import getenv
 
 # Enable logging
@@ -18,21 +20,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 # load environment variables
-PROXY = getenv("PROXY")
-TOKEN = getenv("TOKEN")
-
-if not TOKEN:
-    raise ValueError("TOKEN field can't be empty !")
 
 gif_file_id = None
-usage_guide_message = """
-سلام 👋
-برای استفاده از ربات کافیه داخل چت مورد نظرتون آیدی ربات رو بنویسید و بعد از یک فاصله اسم کالایی که میخواید رو تایپ کنید : 
-
-`@Torobibot فلش مموری`
-"""
-
-# Define a few command handlers. These usually take the two arguments update and
 
 
 # context.
@@ -51,7 +40,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # send usage guide file
     sent_file = await update.message.reply_animation(
         usage_guide,
-        caption=usage_guide_message,
+        caption=messages.START_MESSAGE,
         parse_mode=ParseMode.MARKDOWN,
         read_timeout=50,
     )
@@ -78,10 +67,10 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             [
                 InlineQueryResultArticle(
                     id=str(uuid4()),
-                    title="عملیات با خطا مواجه شد",
+                    title=messages.ERROR_RAISED_MESSAGE,
                     # description="",
                     input_message_content=InputTextMessageContent(
-                        "عملیات با خطا مواجه شد !",
+                        messages.ERROR_RAISED_MESSAGE,
                         parse_mode=ParseMode.MARKDOWN,
                         disable_web_page_preview=True,
                     ),
@@ -98,11 +87,12 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             thumbnail_url=card.image,
             thumbnail_width=80,
             url=card.product_page,
-            description=f"{card.price:,} تومان",
+            # TODO: handle non-exists products
+            # TODO: convert numbers to latin digit from persian digit
+            # TODO: handle cards with no stock_status
+            description=card.price_text,
             input_message_content=InputTextMessageContent(
-                "🛍 **{}**\n💰 {:,} تومان\n🛒 [موجود {}]({})".format(
-                    card.name1, card.price, card.shop_text, card.product_page
-                ),
+                create_info_message(card=card),
                 parse_mode=ParseMode.MARKDOWN,
                 disable_web_page_preview=True,
             ),
@@ -124,6 +114,11 @@ def main() -> None:
     """Run the bot."""
 
     # Create the Application and pass it your bot's token.
+    PROXY = getenv("PROXY")
+    TOKEN = getenv("TOKEN")
+
+    if not TOKEN:
+        raise ValueError("TOKEN field can't be empty !")
 
     if PROXY:
         application = (
