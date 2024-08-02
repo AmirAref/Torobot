@@ -10,6 +10,8 @@ INLINE_RESULT_DESCRIPTION = "{price:,} تومان"
 
 
 STOCK_STATUS_MESSAGE = "ℹ️ وضعیت : {stock_status}\n"
+EXISTS_IN_SHOP = "موجود"
+SHOW_IN_SHOP = "مشاهده"
 SEARCH_RESULT_MESSAGE = (
-    "🛍 {name}\n{stock_status_m}💰 {price}\n🛒 [موجود {shop}]({link})"
+    "🛍 {name}\n{stock_status_m}💰 {price}\n🛒 [{shop_text} {shop}]({link})"
 )

@@ -87,9 +87,7 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             thumbnail_url=card.image,
             thumbnail_width=80,
             url=card.product_page,
-            # TODO: handle non-exists products
             # TODO: convert numbers to latin digit from persian digit
-            # TODO: handle cards with no stock_status
             description=card.price_text,
             input_message_content=InputTextMessageContent(
                 create_info_message(card=card),

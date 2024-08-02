@@ -22,6 +22,11 @@ class Card(BaseModel):
             return None
         return value
 
+    @field_validator("name1", "name2", "shop_text")
+    @classmethod
+    def remove_whitespaces(cls, value: str):
+        return value.strip()
+
     @property
     def product_page(self) -> str:
         return f"https://torob.com{self.product_page_slug}"

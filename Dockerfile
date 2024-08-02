@@ -1,5 +1,5 @@
 # pull the images
-FROM python:3.11-alpine
+FROM python:3.11-bullseye
 
 # Set Environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
