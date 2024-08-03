@@ -91,7 +91,7 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             description=card.price_text,
             input_message_content=InputTextMessageContent(
                 create_info_message(card=card),
-                parse_mode=ParseMode.MARKDOWN,
+                parse_mode=ParseMode.MARKDOWN_V2,
                 disable_web_page_preview=True,
             ),
         )

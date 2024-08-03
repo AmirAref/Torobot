@@ -1,5 +1,16 @@
 from Torob.api import Card
 import messages
+import re
+
+
+def escape_markdown(text: str) -> str:
+    # Define the special characters to escape in Markdown
+    special_characters = r"([_*{}\[\]()#+.!|-])"
+
+    # Use a regular expression to find all special characters and escape them
+    escaped_text = re.sub(special_characters, r"\\\1", text)
+
+    return escaped_text
 
 
 def create_info_message(card: Card):
@@ -19,7 +30,7 @@ def create_info_message(card: Card):
 
     # create message
     message = messages.SEARCH_RESULT_MESSAGE.format(
-        name=card.name1.strip(),
+        name=escape_markdown(card.name1.strip()),
         price=card.price_text,
         link=card.product_page,
         shop_text=shop_text,
